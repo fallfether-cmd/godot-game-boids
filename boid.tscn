@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dflbwib5sirq4"]
+
+[ext_resource type="Script" uid="uid://qqu8shdvkgd2" path="res://boid.gd" id="1_xur1n"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_fg5l1"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xur1n"]
+
+[node name="Boid" type="CharacterBody3D" unique_id=1347738446]
+script = ExtResource("1_xur1n")
+
+[node name="Pivot" type="Node3D" parent="." unique_id=902995106]
+
+[node name="Model" type="MeshInstance3D" parent="Pivot" unique_id=1851709291]
+mesh = SubResource("CapsuleMesh_fg5l1")
+
+[node name="BoidCollision" type="CollisionShape3D" parent="." unique_id=162434258]
+shape = SubResource("SphereShape3D_xur1n")

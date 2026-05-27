@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://do7c1hlvggrtl"]
+
+[ext_resource type="Script" uid="uid://c0fktvw80x5hv" path="res://boids_root.gd" id="1_80bkl"]
+[ext_resource type="PackedScene" uid="uid://dflbwib5sirq4" path="res://boid.tscn" id="2_f41t3"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_f41t3"]
+size = Vector2(10, 10)
+
+[node name="BoidsRoot" type="Node" unique_id=982181699]
+script = ExtResource("1_80bkl")
+boid_scene = ExtResource("2_f41t3")
+
+[node name="CameraMarker" type="Marker3D" parent="." unique_id=82033263]
+
+[node name="Camera3D" type="Camera3D" parent="CameraMarker" unique_id=667011477]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.855, 11.59)
+
+[node name="TestGeometry" type="MeshInstance3D" parent="." unique_id=1114883469]
+transform = Transform3D(0.9262855, -0.3768225, 0, 0.3768225, 0.9262855, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_f41t3")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=20695983]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.855, 11.59)
+light_energy = 4.888
+sky_mode = 1

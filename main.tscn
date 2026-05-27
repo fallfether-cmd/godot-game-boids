@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://cjb0bfop4g2bb"]
+
+[ext_resource type="Script" uid="uid://cfqekc2pfahil" path="res://input_handler.gd" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://cjp03oo4r2wg0" path="res://camera_rig.gd" id="1_h2yge"]
+[ext_resource type="PackedScene" uid="uid://kvbmua0cyqg5" path="res://player.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://do7c1hlvggrtl" path="res://boids_root.tscn" id="4_1bvp3"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_7dm0k"]
+radius = 10.217
+height = 45.597
+
+[node name="Root" type="Node" unique_id=760594978]
+
+[node name="ReferenceGeometry" type="MeshInstance3D" parent="." unique_id=1355274661]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -27.99018)
+mesh = SubResource("CapsuleMesh_7dm0k")
+
+[node name="CameraRig" type="Marker3D" parent="." unique_id=1804639423]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.935, 5.555)
+script = ExtResource("1_h2yge")
+
+[node name="Camera" type="Camera3D" parent="CameraRig" unique_id=1959561184]
+
+[node name="InputController" type="Node3D" parent="." unique_id=519254657]
+script = ExtResource("1_0xm2m")
+
+[node name="Player" parent="." unique_id=270633246 instance=ExtResource("1_ig7tw")]
+transform = Transform3D(0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0)
+rotation_edit_mode = 2
+visible = false
+
+[node name="BoidsRoot" parent="." unique_id=982181699 instance=ExtResource("4_1bvp3")]
