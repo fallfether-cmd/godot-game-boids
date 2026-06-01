@@ -30,7 +30,7 @@ func receive_mouse_moved_camera(mouse_velocity):
 
 	transform.basis = Basis(final_quat).orthonormalized()
 
-func _physics_process(_delta: float) -> void:
+func _process(_delta: float) -> void:
 	#transform.origin += 1 * (transform.basis * Vector3.FORWARD)
 	camera_oriented.emit(transform)
 	
