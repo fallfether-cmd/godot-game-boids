@@ -34,7 +34,7 @@ func _ready() -> void:
 	}
 	
 	var id = 0
-	for i in range(50):
+	for i in range(70):
 		var boid = boid_scene.instantiate()
 		boids.append(boid)
 		updated_decay_properties.connect(boid.received_updated_decay_properties_boid)

@@ -18,4 +18,11 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	updated_position.emit(transform.origin)
 	transform.origin += player_properties["speed"].value * (transform_data.basis * Vector3.FORWARD)
+	transform.basis = transform_data.basis
 	move_and_slide()
+	
+	
+# center the grid on the player
+# use vel from last frame to know the delta between one frame and the next for the grid
+# use that vel and the boid vel to know if it's moved from one cell to another
+# move boids across cells and update the relevant arrays

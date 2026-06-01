@@ -40,12 +40,12 @@ func get_alignment():
 	var desired = Vector3(0,0,0)
 	var boid_counter = 0
 	var diff_pos
-	var alignment_lim = decay_properties["alignment_limit"].value
+	var alignment_lim = decay_properties["alignment_limit"].value * decay_properties["alignment_limit"].value
 	for boid in boids:
 		if boid == self:
 			continue
 		diff_pos = boid.transform.origin - transform.origin
-		if diff_pos.length() < alignment_lim:
+		if diff_pos.length_squared() < alignment_lim:
 			desired += boid.velocity - velocity
 			boid_counter += 1
 	if boid_counter == 0:
