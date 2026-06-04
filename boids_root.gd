@@ -1,11 +1,17 @@
 extends Node
 
 @export var boid_scene: PackedScene
+
+const SUBDIVISION_COUNT = 5
+const NUM_OF_BOIDS = 70
+
 var boids = []
 var boid_average_velocity
 var decay_properties = {}
 var player_properties = {}
 var player
+var subdivisions = []
+var boid_linked_list
 
 var speed_toggle = false
 var billow_toggle = false
@@ -13,7 +19,13 @@ var billow_toggle = false
 signal updated_decay_properties(data)
 signal updated_player_properties(data)
 
-# Called when the node enters the scene tree for the first time.
+# spatial partioning:
+# generate an array that is 32768 in size
+# use that to represent subdivisions of the area around the player, by having every 3 bits represent a subdivision of x,y,z
+# get boid array index cheaply by using bitshifts, since everything is base 2
+# each index of the array should either point to -1 if nothing in subdivision, or a pointer (boid id) of the HEAD of the boids in that subdivision
+# have another array length(# of boids) where the idex = boid id, each boid id points to NEXT and PREV node in the double linked list
+# add and remove as you would for other double linked lists
 func _ready() -> void:
 	randomize()
 	
@@ -33,13 +45,19 @@ func _ready() -> void:
 		"speed": Stat.new(0.5, 0, 1)
 	}
 	
+	subdivisions.resize(pow(8, SUBDIVISION_COUNT))
+	subdivisions.fill(-1)
+	
+	boid_linked_list = DoubleLinkedList.new(NUM_OF_BOIDS)
+	
+	
 	var id = 0
-	for i in range(200):
+	for i in range(NUM_OF_BOIDS):
 		var boid = boid_scene.instantiate()
 		boids.append(boid)
 		updated_decay_properties.connect(boid.received_updated_decay_properties_boid)
 		updated_decay_properties.emit(decay_properties)
-		boid.initialize(boids, id) #they're all childen of this node, so it's acceptable to dump in a reference to this array... probably. it's probably cleaner to enforce unidirectional changes from here and have children signal new data but whatever
+		boid.initialize(boids, id, subdivisions, boid_linked_list) #they're all childen of this node, so it's acceptable to dump in a reference to this array... probably. it's probably cleaner to enforce unidirectional changes from here and have children signal new data but whatever
 		add_child(boid)
 	
 	player = get_tree().get_root().get_node("Root/Player")

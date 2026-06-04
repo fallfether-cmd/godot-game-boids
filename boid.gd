@@ -3,10 +3,17 @@ extends CharacterBody3D
 var acceleration
 var id
 var boids = []
+var subdivisions
+var boid_linked_list
 var desired_acceleration
 var player_pos = Vector3.ZERO
 
 var decay_properties = {}
+
+var xyz_float := PackedByteArray()
+var xyz_int := PackedByteArray()
+var origin := Vector3()
+var bitstring : int
 
 # let accel, cohesion, flocking, and separation all be vec3
 
@@ -26,15 +33,35 @@ var decay_properties = {}
 func received_updated_decay_properties_boid(data):
 	decay_properties = data
 
-func initialize(boids, id):
+func initialize(boids, id, subdivisions, boid_linked_list):
 	self.id = id
 	self.boids = boids
+	self.subdivisions = subdivisions
+	self.boid_linked_list = boid_linked_list
+	
 	
 	var max_vel = decay_properties["max_vel"].value
 	
 	transform.origin = Vector3(randi() % 20 - 10, randi() % 20 - 10, randi() % 20 - 10)
 	velocity = Vector3(randf()*max_vel-max_vel/2, randf()*max_vel-max_vel/2, randf()*max_vel-max_vel/2)
 	acceleration = Vector3(0,0,0)
+	
+	#get the proper subdivision
+	origin = transform.origin
+	xyz_float.resize(12)
+	xyz_int.resize(12)
+	subdivisions[get_subdivision()] = id
+	#boid_linked_list.add(id)
+	
+	# consider negatives?
+	
+
+func get_subdivision() -> int:
+
+	bitstring = ((int(origin.x) >> 2) & 0x1F) << 10 | ((int(origin.y) >> 2) & 0x1F) << 5 | ((int(origin.z) >> 2) & 0x1F)
+	
+	return bitstring
+	
 
 func get_alignment():
 	var desired = Vector3(0,0,0)
